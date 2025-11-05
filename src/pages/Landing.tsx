@@ -9,7 +9,7 @@ const Landing = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background px-4">
       <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in duration-700">
         <div className="inline-flex items-center justify-center w-20 h-20 mt-3">
-          <img className="w-20 h-20 text-primary" src="src/static/Logo_UTFSM.png"/>
+          <img className="w-20 h-20 text-primary" src="/Logo_UTFSM.png"/>
         </div>
         
         <h1 className="text-5xl md:text-5xl font-bold text-foreground tracking-tight">

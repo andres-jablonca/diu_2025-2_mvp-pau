@@ -166,7 +166,7 @@ const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
         <div className="container mx-auto px-8 py-6 ">
           <div className="flex items-center gap-3 mb-6 max-w-7xl mx-auto">
             <div className="p-3 bg-primary/10 mr-3 rounded-xl shadow-sm ">
-              <img className="w-8 h-8 text-primary" src="src/static/Logo_UTFSM.png" />
+              <img className="w-8 h-8 text-primary" src="/Logo_UTFSM.png" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">PAU - Ayudantías</h1>
