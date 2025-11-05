@@ -1,9 +1,9 @@
 import { useApplications } from "@/contexts/ApplicationContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Calendar, FileText, X, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
+import { FileText, X, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { es, hr } from "date-fns/locale";
 import { toast } from "sonner";
 import { useState } from "react";
 import {
@@ -63,12 +63,14 @@ const MyApplications = () => {
   const handleDragEnd = () => {
     setDraggedIndex(null);
   };
-
+  
   if (activeApplications.length === 0) {
     return (
+      
       <div className="text-center py-16">
+        
         <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-foreground mb-2">
+        <h3 className="text-xl font-semibold text-foreground mb-1">
           No tienes postulaciones activas
         </h3>
         <p className="text-muted-foreground">
@@ -79,108 +81,121 @@ const MyApplications = () => {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Mis Postulaciones</h2>
-        <Badge variant="outline" className="text-base">
+    
+    <div className="space-y-4 pb-4">
+      <hr className="border-border/100 mx-6" />
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-2xl font-bold text-foreground ml-6">Mis Postulaciones</h2>
+        <Badge variant="outline" className="text-base mr-6">
           {activeApplications.length} {activeApplications.length === 1 ? 'postulación' : 'postulaciones'}
         </Badge>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {activeApplications.map((application, index) => (
-          <div
-            key={application.id}
-            draggable
-            onDragStart={() => handleDragStart(index)}
-            onDragOver={(e) => handleDragOver(e, index)}
-            onDragEnd={handleDragEnd}
-            className={`bg-gradient-to-br from-card to-card/80 border border-border rounded-lg p-4 transition-all duration-300 ${
-              draggedIndex === index 
-                ? 'opacity-50 scale-95' 
-                : 'hover:shadow-lg hover:-translate-y-1 cursor-move'
-            }`}
-          >
-            <div className="flex items-start gap-2 mb-3">
-              <div className="flex flex-col gap-1 shrink-0">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6"
-                  onClick={() => moveApplicationUp(application.id)}
-                  disabled={index === 0}
-                >
-                  <ArrowUp className="w-4 h-4" />
-                </Button>
-                <GripVertical className="w-5 h-5 text-muted-foreground cursor-grab active:cursor-grabbing" />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6"
-                  onClick={() => moveApplicationDown(application.id)}
-                  disabled={index === activeApplications.length - 1}
-                >
-                  <ArrowDown className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-medium text-muted-foreground">Prioridad de postulación:</span>
-                  <Badge variant="secondary" className="font-bold text-sm">
-                    #{application.priority}
+      <div className="overflow-x-auto bg-card border-2 border-border rounded-xl shadow-lg max-w-6xl mx-auto px">
+        <table className="w-full border-collapse border border-border/40">
+          <thead className="bg-green-600 text-white border-b-2 border-green-800 ">
+            <tr>
+              <th className="text-center p-3 border border-green-700 font-semibold text-white">Prioridad</th>
+              <th className="text-center p-2 border border-green-700 font-semibold text-white">Asignatura</th>
+              <th className="text-center p-2 border border-green-700 font-semibold text-white">Departamento</th>
+              <th className="text-center p-2 border border-green-700 font-semibold text-white">Categoría</th>
+              <th className="text-center p-2 border border-green-700 font-semibold text-white">Fecha de postulación</th>
+              <th className="text-center p-2 border border-green-700 font-semibold text-white">Estado</th>
+              <th className="text-center p-2 border border-green-700 px-4 font-semibold text-white">Cancelar/Renunciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {activeApplications.map((application, index) => (
+              <tr
+                key={application.id}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`border-b border-border transition-all duration-200 ${
+                  draggedIndex === index 
+                    ? 'opacity-50 bg-muted' 
+                    : 'hover:bg-muted/30 cursor-move'
+                } ${index % 2 === 0 ? 'bg-background' : 'bg-muted/10'}`}
+              >
+                <td className="p-2 border border-border/100 bg-background text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="flex flex-col gap-1 shrink-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-4 w-6"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveApplicationUp(application.id);
+                        }}
+                        disabled={index === 0}
+                      >
+                        <ArrowUp className="w-4 h-4" />
+                      </Button>
+                      <GripVertical className="w-6 h-4 text-muted-foreground cursor-grab active:cursor-grabbing" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-4 w-6"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveApplicationDown(application.id);
+                        }}
+                        disabled={index === activeApplications.length - 1}
+                      >
+                        <ArrowDown className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <Badge variant="secondary" className="font-bold text-sm">
+                      #{application.priority}
+                    </Badge>
+                  </div>
+                </td>
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  <h3 className="font-semibold text-foreground">{application.positionTitle}</h3>
+                </td>
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  <span className="text-sm text-foreground">{application.department}</span>
+                </td>
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  {application.category ? (
+                    <Badge variant="outline" className="capitalize text-xs">
+                      {application.category}
+                    </Badge>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">-</span>
+                  )}
+                </td>
+                
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  <span className="text-sm text-foreground">
+                    {format(application.submittedAt, "dd/MM/yyyy", { locale: es })}
+                  </span>
+                </td>
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  <Badge className="bg-warning/10 text-warning border-warning/20 hover:bg-warning/20">
+                    Pendiente
                   </Badge>
-                </div>
-                <h3 className="text-base font-semibold text-foreground mb-1 line-clamp-1">
-                  {application.positionTitle}
-                </h3>
-                <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                  <Building2 className="w-3 h-3" />
-                  <span>{application.department}</span>
-                </div>
-              </div>
-              
-              <Badge className="bg-warning/10 text-warning border-warning/20 hover:bg-warning/20 shrink-0">
-                Pendiente
-              </Badge>
-            </div>
-
-            <div className="flex items-center gap-2 text-muted-foreground mb-3 text-xs">
-              <Calendar className="w-3 h-3" />
-              <span>
-                {format(application.submittedAt, "d 'de' MMM, yyyy", { locale: es })}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 mb-3">
-              {application.category && (
-                <div className="bg-accent/10 rounded px-2 py-1">
-                  <p className="text-xs text-muted-foreground">Categoría</p>
-                  <p className="text-sm font-medium text-foreground capitalize">{application.category}</p>
-                </div>
-              )}
-              <div className="bg-primary/10 rounded px-2 py-1">
-                <p className="text-xs text-muted-foreground">Paralelo</p>
-                <p className="text-sm font-medium text-foreground">{application.section}</p>
-              </div>
-            </div>
-
-            <div className="mb-3 bg-muted/50 rounded p-2">
-              <p className="text-xs font-medium text-foreground mb-1">Motivo:</p>
-              <p className="text-xs text-muted-foreground line-clamp-2">{application.reason}</p>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleCancelClick(application.id, application.positionTitle)}
-              className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/20 transition-colors"
-            >
-              <X className="w-3 h-3 mr-2" />
-              Cancelar Postulación
-            </Button>
-          </div>
-        ))}
+                </td>
+                <td className="p-4 border border-border/100 bg-background text-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCancelClick(application.id, application.positionTitle);
+                    }}
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/20 transition-colors"
+                  >
+                    <X className="w-3 h-3 mr-2" />
+                    Cancelar
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>

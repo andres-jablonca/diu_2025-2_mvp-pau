@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { GraduationCap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
@@ -8,11 +8,11 @@ const Landing = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background px-4">
       <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in duration-700">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
-          <GraduationCap className="w-10 h-10 text-primary" />
+        <div className="inline-flex items-center justify-center w-20 h-20 mt-3">
+          <img className="w-20 h-20 text-primary" src="src/static/Logo_UTFSM.png"/>
         </div>
         
-        <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight">
+        <h1 className="text-5xl md:text-5xl font-bold text-foreground tracking-tight">
           Plataforma de Ayudantías
           <span className="block text-primary mt-2">Unificadas</span>
         </h1>
@@ -22,7 +22,7 @@ const Landing = () => {
           Gestiona tus postulaciones en un solo lugar.
         </p>
 
-        <div className="pt-4">
+        <div className="pt-2">
           <Button
             size="lg"
             onClick={() => navigate("/positions")}
@@ -33,7 +33,7 @@ const Landing = () => {
           </Button>
         </div>
 
-        <div className="pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div className="pt-3 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
           <div className="p-6 rounded-lg bg-card border border-border">
             <h3 className="font-semibold text-lg mb-2 text-foreground">Búsqueda Avanzada</h3>
             <p className="text-muted-foreground">Filtra por departamento y categoría para encontrar oportunidades.</p>

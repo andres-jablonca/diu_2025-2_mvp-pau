@@ -24,9 +24,10 @@ interface ApplicationModalProps {
   position: Position | null;
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const ApplicationModal = ({ position, isOpen, onClose }: ApplicationModalProps) => {
+const ApplicationModal = ({ position, isOpen, onClose, onSuccess }: ApplicationModalProps) => {
   const [reason, setReason] = useState("");
   const [category, setCategory] = useState<PositionCategory | "">("");
   const [section, setSection] = useState<Section>("200");
@@ -73,6 +74,7 @@ const ApplicationModal = ({ position, isOpen, onClose }: ApplicationModalProps) 
     setReason("");
     setCategory("");
     setSection("200");
+    onSuccess?.();
     onClose();
   };
 
@@ -125,20 +127,7 @@ const ApplicationModal = ({ position, isOpen, onClose }: ApplicationModalProps) 
             </div>
           )}
 
-          <div className="space-y-2">
-            <Label htmlFor="section">
-              Paralelo <span className="text-destructive">*</span>
-            </Label>
-            <Select value={section} onValueChange={(value) => setSection(value as Section)} required>
-              <SelectTrigger id="section">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-popover">
-                <SelectItem value="200">200</SelectItem>
-                <SelectItem value="201">201</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          
 
           <div className="flex gap-3 pt-4">
             <Button type="button" variant="outline" onClick={onClose} className="flex-1">
